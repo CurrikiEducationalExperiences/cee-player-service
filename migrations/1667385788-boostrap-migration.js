@@ -1,95 +1,63 @@
-'use strict';
+"use strict";
 module.exports = {
-  async up(queryInterface, DataTypes) {
-  
-    await queryInterface.createTable('users', {
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      defaultValue: '',
-    },
-    email: {
-      type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    phone: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    deletedAt: {
-      allowNull: true,
-      type: DataTypes.DATE,
-    }
-  });
-  await queryInterface.createTable('accounts', {
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'users',
-        key: 'id',
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("admins", {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
       },
-    },
-    facebook: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    instagram: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    twitter: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    deletedAt: {
-      allowNull: true,
-      type: DataTypes.DATE,
-    }
-  });
-  await queryInterface.addIndex('users', ['email']);
+      email: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      password: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+    });
+    await queryInterface.addIndex("admins", ["email"]);
+    await queryInterface.createTable("resetPasswordTokens", {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+      },
+      email: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      token: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+    });
+    await queryInterface.addIndex("resetPasswordTokens", ["email"]);
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('accounts');
-    await queryInterface.dropTable('users');
-  }
+    await queryInterface.dropTable("resetPasswordTokens");
+    await queryInterface.dropTable("admins");
+  },
 };
