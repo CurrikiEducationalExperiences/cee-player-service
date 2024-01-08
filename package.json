@@ -1,7 +1,7 @@
 {
-  "name": "c2e-player-app",
+  "name": "cee-services-player",
   "version": "1.0.0",
-  "description": "C2E Player Application",
+  "description": "CEE Player Application",
   "main": "index.js",
   "scripts": {
     "migrate": "npx sequelize-cli db:migrate",
