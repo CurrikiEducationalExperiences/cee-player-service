@@ -1,0 +1,43 @@
+{
+    "title": "Curriki Educational Experiences",
+    "scopes": [
+        "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem",
+        "https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly",
+        "https://purl.imsglobal.org/spec/lti-ags/scope/score",
+        "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly",
+        "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly"
+    ],
+    "extensions": [
+        {
+            "platform": "canvas.instructure.com",
+            "settings": {
+                "platform": "canvas.instructure.com",
+                "text": "Curriki Educational Experiences",
+                "icon_url": "https://c2e-player-app-nodejs-stage.curriki.org/icon.svg",
+                "placements": [
+                    {
+                        "text": "Curriki Educational Experiences",
+                        "icon_url": "https://c2e-player-app-nodejs-stage.curriki.org/icon.svg",
+                        "placement": "link_selection",
+                        "message_type": "LtiDeepLinkingRequest",
+                        "target_link_uri": "https://c2e-player-app-nodejs-stage.curriki.org"
+                    },
+                    {
+                        "text": "Curriki Educational Experiences",
+                        "icon_url": "https://c2e-player-app-nodejs-stage.curriki.org/icon.svg",
+                        "placement": "assignment_selection",
+                        "message_type": "LtiDeepLinkingRequest",
+                        "target_link_uri": "https://c2e-player-app-nodejs-stage.curriki.org"
+                    }
+                ]
+            },
+            "privacy_level": "public"
+        }
+    ],
+    "public_jwk": {},
+    "description": "Curriki Educational Experiences LTI 1.3 Tool",
+    "custom_fields": {},
+    "public_jwk_url": "https://c2e-player-app-nodejs-stage.curriki.org/keys",
+    "target_link_uri": "https://c2e-player-app-nodejs-stage.curriki.org",
+    "oidc_initiation_url": "https://c2e-player-app-nodejs-stage.curriki.org/login"
+}
