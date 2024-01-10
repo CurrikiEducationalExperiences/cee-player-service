@@ -1,0 +1,83 @@
+# build.yml
+on:
+  # pull_request:
+  #   paths:
+  #   - "**"
+  push:
+    paths:
+    - "**"
+    branches:         # array of glob patterns matching against refs/heads. Optional; defaults to all
+    - develop          # triggers on pushes that contain changes in develop
+    - main          # triggers on pushes that contain changes in main
+    - staging          # triggers on pushes that contain changes in main
+
+name: Build
+
+# https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
+env:
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+  AWS_DEFAULT_OUTPUT: ${{ vars.AWS_DEFAULT_OUTPUT }}
+  AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  PROJECT_NAME: cee-services-player
+  ECR_USERNAME: ${{vars.ECR_USERNAME}}
+  CONTAINER_IMAGE: cee-services-player:${{ github.sha }}
+  AWS_ACCOUNT_ID: ${{vars.AWS_ACCOUNT_ID}}
+  EKS_CLUSTER_NAME: ${{vars.EKS_CLUSTER_NAME}}
+  ENV_JS: ${{vars.ENV_JS}}
+  ENV_JS_DEV: ${{vars.ENV_JS_DEV}}
+
+
+jobs:
+  build-and-push:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Setup ECR
+      run: |
+        # Login to AWS ECR
+        aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username $ECR_USERNAME --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+
+    - name: Build and tag the image
+      run: |
+        # Build and tag the image
+
+        if [ ${{ github.ref }} = 'refs/heads/develop' ]; then
+          echo "$ENV_JS_DEV" > .env
+        elif [ ${{ github.ref }} = 'refs/heads/main' ]; then
+          echo "$ENV_JS" > .env
+        else
+          echo "No specific config."
+        fi
+        docker build \
+          -t $CONTAINER_IMAGE \
+          -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE ./
+
+    - name: Push Image
+      run: |
+        # Push image to AWS ECR
+        docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE
+
+    - name: Deploy
+      run: |
+        # Deploy to Kubernetes
+        export DOCKER_IMAGE_NAME=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE
+        aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME}
+        curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+        if [ ${{ github.ref }} = 'refs/heads/develop' ]; then
+          helm upgrade --namespace c2e-dev --install --debug ${PROJECT_NAME} charts/cee-services-player \
+          --set image.repository=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE
+        elif [ ${{ github.ref }} = 'refs/heads/staging' ]; then
+          helm upgrade --namespace c2e-stage --install --debug ${PROJECT_NAME} charts/cee-services-player \
+          --set image.repository=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE
+        elif [ ${{ github.ref }} = 'refs/heads/main' ]; then
+          helm upgrade --namespace c2e-prod --install --debug ${PROJECT_NAME} charts/cee-services-player \
+          --set image.repository=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE
+        else
+          echo "No specific config."
+        fi
+        

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.COMMON_NAME}}
+  labels:
+    app: {{.Values.COMMON_NAME}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{.Values.COMMON_NAME}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.COMMON_NAME}}
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: cee-services-player-config
+        name: {{.Values.COMMON_NAME}}
+        image: {{.Values.image.repository}}
+        imagePullPolicy: {{.Values.image.pullPolicy}}
+        ports:
+          - containerPort: 80
+        volumeMounts:
+        - mountPath: /app/.env
+          name: cee-services-player-config
+          subPath: .env
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: cee-services-player-config
+        name: cee-services-player-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.COMMON_NAME}}
+spec:
+  selector:
+    app: {{.Values.COMMON_NAME}}
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
