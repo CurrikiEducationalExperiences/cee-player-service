@@ -1,5 +1,5 @@
-const { ltiController } = require("../../controllers/lti");
-const { ltiService } = require("../../service/lti");
+const { LtiController } = require("../../controllers/lti");
+const { LtiService } = require("../../services/lti");
 
 describe("controller/routes", () => {
   describe("grade", () => {
@@ -14,8 +14,8 @@ describe("controller/routes", () => {
         result,
       };
       const next = jest.fn();
-      jest.spyOn(ltiService, "grade").mockResolvedValueOnce(result);
-      await ltiController.grade(req, res, next);
+      jest.spyOn(LtiService, "grade").mockResolvedValueOnce(result);
+      await LtiController.grade(req, res, next);
       expect(res.result).toEqual(result);
     });
   });
@@ -32,8 +32,8 @@ describe("controller/routes", () => {
         result,
       };
       const next = jest.fn();
-      jest.spyOn(ltiService, "members").mockResolvedValueOnce(result);
-      await ltiController.members(req, res, next);
+      jest.spyOn(LtiService, "members").mockResolvedValueOnce(result);
+      await LtiController.members(req, res, next);
       expect(res.result).toEqual(result);
     });
   });
@@ -50,8 +50,8 @@ describe("controller/routes", () => {
         result,
       };
       const next = jest.fn();
-      jest.spyOn(ltiService, "deeplink").mockResolvedValueOnce(result);
-      await ltiController.deeplink(req, res, next);
+      jest.spyOn(LtiService, "deeplink").mockResolvedValueOnce(result);
+      await LtiController.deeplink(req, res, next);
       expect(res.result).toEqual(result);
     });
   });
@@ -68,8 +68,8 @@ describe("controller/routes", () => {
         result,
       };
       const next = jest.fn();
-      jest.spyOn(ltiService, "info").mockResolvedValueOnce(result);
-      await ltiController.info(req, res, next);
+      jest.spyOn(LtiService, "info").mockResolvedValueOnce(result);
+      await LtiController.info(req, res, next);
       expect(res.result).toEqual(result);
     });
   });
@@ -86,8 +86,8 @@ describe("controller/routes", () => {
         result,
       };
       const next = jest.fn();
-      jest.spyOn(ltiService, "resources").mockResolvedValueOnce(result);
-      await ltiController.resources(req, res, next);
+      jest.spyOn(LtiService, "resources").mockResolvedValueOnce(result);
+      await LtiController.resources(req, res, next);
       expect(res.result).toEqual(result);
     });
   });
@@ -104,8 +104,8 @@ describe("controller/routes", () => {
         result,
       };
       const next = jest.fn();
-      jest.spyOn(ltiService, "stream").mockResolvedValueOnce(result);
-      await ltiController.stream(req, res, next);
+      jest.spyOn(LtiService, "stream").mockResolvedValueOnce(result);
+      await LtiController.stream(req, res, next);
       expect(res.result).toEqual(result);
     });
   });
@@ -122,8 +122,8 @@ describe("controller/routes", () => {
         result,
       };
       const next = jest.fn();
-      jest.spyOn(ltiService, "xapi").mockResolvedValueOnce(result);
-      await ltiController.xapi(req, res, next);
+      jest.spyOn(LtiService, "xapi").mockResolvedValueOnce(result);
+      await LtiController.xapi(req, res, next);
       expect(res.result).toEqual(result);
     });
   });
@@ -140,8 +140,8 @@ describe("controller/routes", () => {
         result,
       };
       const next = jest.fn();
-      jest.spyOn(ltiService, "registerPlatform").mockResolvedValueOnce(result);
-      await ltiController.registerPlatform(req, res, next);
+      jest.spyOn(LtiService, "registerPlatform").mockResolvedValueOnce(result);
+      await LtiController.registerPlatform(req, res, next);
       expect(res.result).toEqual(result);
     });
   });
@@ -158,8 +158,8 @@ describe("controller/routes", () => {
         result,
       };
       const next = jest.fn();
-      jest.spyOn(ltiService, "canvasConfigJson").mockResolvedValueOnce(result);
-      await ltiController.canvasConfigJson(req, res, next);
+      jest.spyOn(LtiService, "canvasConfigJson").mockResolvedValueOnce(result);
+      await LtiController.canvasConfigJson(req, res, next);
       expect(res.result).toEqual(result);
     });
   });

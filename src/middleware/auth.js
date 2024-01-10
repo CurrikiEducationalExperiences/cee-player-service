@@ -3,7 +3,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const ERROR_CODES = require("../constant/error-messages");
 const CustomError = require("../utils/error");
-const { Admin } = require("../../models/admins");
+const { Admins } = require("../../models/admins");
 const authMiddleware = async (req, res, next) => {
   try {
     if (!req.headers.authorization) {
@@ -77,7 +77,7 @@ const verify = async (token, done) => {
           return done(ERROR_CODES.AUTH_TOKEN_INVALID);
       }
     } else {
-      const user = await Admin.findOne( { where: {id: decoded.id}, raw: true});
+      const user = await Admins.findOne( { where: {id: decoded.id}, raw: true});
       return user && user.id
         ? done(null, user)
         : done(ERROR_CODES.AUTH_TOKEN_EXPIRED);

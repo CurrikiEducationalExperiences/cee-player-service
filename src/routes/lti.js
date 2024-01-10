@@ -3,49 +3,49 @@ const ltiRouter = express.Router();
 const path = require("path");
 const validationMiddleware = require("../middleware/validation");
 const ltiValidations = require("../validations/lti");
-const { ltiController } = require("../controllers/lti");
+const { LtiController } = require("../controllers/lti");
 
 ltiRouter.post(
   "/grade",
   validationMiddleware(ltiValidations.grade),
-  ltiController.grade
+  LtiController.grade
 );
 ltiRouter.get(
   "/members",
-  ltiController.members
+  LtiController.members
 );
 ltiRouter.post(
   "/deeplink",
   validationMiddleware(ltiValidations.deeplink),
-  ltiController.deeplink
+  LtiController.deeplink
 );
 ltiRouter.get(
   "/info",
-  ltiController.info
+  LtiController.info
 );
 ltiRouter.get(
   "/resources",
   validationMiddleware(ltiValidations.resources, (isGet = true)),
-  ltiController.resources
+  LtiController.resources
 );
 ltiRouter.get(
   "/stream",
   validationMiddleware(ltiValidations.stream, (isGet = true)),
-  ltiController.stream
+  LtiController.stream
 );
 ltiRouter.put(
   "/xapi/statements",
   validationMiddleware(ltiValidations.xapi),
-  ltiController.xapi
+  LtiController.xapi
 );
 ltiRouter.post(
   "/platform/register",
   validationMiddleware(ltiValidations.registerPlatform),
-  ltiController.registerPlatform
+  LtiController.registerPlatform
 );
 ltiRouter.get(
   "/canvas/config",
-  ltiController.canvasConfigJson
+  LtiController.canvasConfigJson
 );
 
 ltiRouter.get("*", (req, res) =>

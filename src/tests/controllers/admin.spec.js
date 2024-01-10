@@ -1,5 +1,5 @@
 const { AdminController } = require("../../controllers/admin");
-const { AdminService } = require("../../service/admin");
+const { AdminService } = require("../../services/admin");
 
 describe("controller/admin", () => {
   describe("register", () => {
