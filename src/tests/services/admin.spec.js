@@ -8,7 +8,7 @@ const {
 } = require("../../middleware/auth");
 const { ResetPasswordTokens } = require("../../../models/resetPasswordTokens");
 const ERROR_CODES = require("../../constant/error-messages");
-const { emailService } = require("../../utils/email");
+const { EmailService } = require("../../utils/email");
 
 jest.mock("../../../models/admins", () => ({
   Admins: {
@@ -242,7 +242,7 @@ describe("service/admins", () => {
       issueResetPassToken.mockResolvedValueOnce("token");
       ResetPasswordTokens.findOne.mockResolvedValueOnce(null);
       ResetPasswordTokens.create.mockResolvedValueOnce(true);
-      jest.spyOn(emailService, "sendEmail").mockResolvedValueOnce(true);
+      jest.spyOn(EmailService, "sendEmail").mockResolvedValueOnce(true);
       const response = await AdminService.forgetPassword({
         email: "mehmoodce@gmail.com",
       });
@@ -258,7 +258,7 @@ describe("service/admins", () => {
       issueResetPassToken.mockResolvedValueOnce("token");
       ResetPasswordTokens.findOne.mockResolvedValueOnce({ id: 1 });
       ResetPasswordTokens.update.mockResolvedValueOnce(true);
-      jest.spyOn(emailService, "sendEmail").mockResolvedValueOnce(true);
+      jest.spyOn(EmailService, "sendEmail").mockResolvedValueOnce(true);
       const response = await AdminService.forgetPassword({
         email: "mehmoodce@gmail.com",
       });

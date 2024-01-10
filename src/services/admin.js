@@ -4,7 +4,7 @@ const ERROR_CODES = require("../constant/error-messages");
 const CustomError = require("../utils/error");
 const { Admins } = require("../../models/admins");
 const { ResetPasswordTokens } = require("../../models/resetPasswordTokens");
-const { emailService } = require("../utils/email");
+const { EmailService } = require("../utils/email");
 const CONST_VARS = require("../constant/constant")
 const {
   issueToken,
@@ -142,7 +142,7 @@ class AdminService {
         }
       );
     }
-    const response = await emailService.sendEmail({
+    const response = await EmailService.sendEmail({
       email: params.email,
       subject: CONST_VARS.CONSTANTS.FORGET_EMAIL_SUBJECT,
       body: CONST_VARS.CONSTANTS.FORGET_EMAIL_BODY+_token,
