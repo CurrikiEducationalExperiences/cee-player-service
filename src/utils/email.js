@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-class emailService {
+class EmailService {
   static async sendEmail(params) {
     try {
       let transporter = nodemailer.createTransport({
@@ -33,4 +33,4 @@ class emailService {
     }
   }
 }
-module.exports = { emailService };
+module.exports = { EmailService };
