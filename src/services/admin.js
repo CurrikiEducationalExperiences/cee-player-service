@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const passCom = require("joi-password-complexity");
 const ERROR_CODES = require("../constant/error-messages");
 const CustomError = require("../utils/error");
-const { Admin } = require("../../models/admins");
+const { Admins } = require("../../models/admins");
 const { ResetPasswordTokens } = require("../../models/resetPasswordTokens");
 const { emailService } = require("../utils/email");
 const CONST_VARS = require("../constant/constant")
@@ -22,7 +22,7 @@ const _complexityOptions = {
 
 class AdminService {
   static async register(params) {
-    const _existingProfile = await Admin.findOne({
+    const _existingProfile = await Admins.findOne({
       where: { email: params.email },
       raw: true,
     });
@@ -33,7 +33,7 @@ class AdminService {
     if (_pass.error) {
       throw new CustomError(ERROR_CODES.PASS_RULES_ERROR);
     }
-    await Admin.create({
+    await Admins.create({
       email: params.email,
       password: bcrypt.hashSync(params.password, bcrypt.genSaltSync(2)),
     });
@@ -41,7 +41,7 @@ class AdminService {
   }
 
   static async login(params) {
-    const _profile = await Admin.findOne({
+    const _profile = await Admins.findOne({
       where: { email: params.email },
       raw: true,
     });
@@ -56,7 +56,7 @@ class AdminService {
   }
 
   static async getProfile(params) {
-    const _user = await Admin.findOne({
+    const _user = await Admins.findOne({
       where: { id: params.id },
       attributes: { exclude: ["password"] },
       raw: true,
@@ -79,7 +79,7 @@ class AdminService {
   }
 
   static async updatePassword(params) {
-    const _profile = await Admin.findOne({
+    const _profile = await Admins.findOne({
       where: { id: params.loggedUser.id },
       raw: true,
     });
@@ -96,7 +96,7 @@ class AdminService {
     if (_pass.error) {
       throw new CustomError(ERROR_CODES.PASS_RULES_ERROR);
     }
-    await Admin.update(
+    await Admins.update(
       {
         password: bcrypt.hashSync(params.newPassword, bcrypt.genSaltSync(2)),
       },
@@ -110,7 +110,7 @@ class AdminService {
   }
 
   static async forgetPassword(params) {
-    const _profile = await Admin.findOne({
+    const _profile = await Admins.findOne({
       where: { email: params.email },
       raw: true,
     });
@@ -167,7 +167,7 @@ class AdminService {
     const _decodedToken = validatePasswordToken(params.token);
     if (_decodedToken === 404)
       throw new CustomError(ERROR_CODES.RESET_PASS_LINK_EXPIRED);
-    const _profile = await Admin.findOne({
+    const _profile = await Admins.findOne({
       where: { email: _decodedToken.email },
       raw: true,
     });
@@ -179,7 +179,7 @@ class AdminService {
         email: _decodedToken.email,
       },
     });
-    await Admin.update(
+    await Admins.update(
       {
         password: bcrypt.hashSync(params.password, bcrypt.genSaltSync(2)),
       },

@@ -3,7 +3,7 @@ const lti = require("ltijs").Provider;
 const { PlatformSettings } = require("../../models/platformSettings");
 const ERROR_CODES = require("../constant/error-messages");
 const SUCCESS_CODES = require("../constant/success-messages");
-class ltiService {
+class LtiService {
   static async members(req, res) {
     try {
       const result = await lti.NamesAndRoles.getMembers(res.locals.token);
@@ -321,4 +321,4 @@ class ltiService {
   }
 }
 
-module.exports = { ltiService };
+module.exports = { LtiService };

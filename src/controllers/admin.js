@@ -1,4 +1,4 @@
-const { AdminService } = require("../service/admin");
+const { AdminService } = require("../services/admin");
 const { responseHandler } = require("../utils/response");
 class AdminController {
   static async register(req, res, next) {

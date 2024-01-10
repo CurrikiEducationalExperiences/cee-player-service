@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
-const { AdminService } = require("../../service/admin");
-const { Admin } = require("../../../models/admins");
+const { AdminService } = require("../../services/admin");
+const { Admins } = require("../../../models/admins");
 const {
   validatePasswordToken,
   issueResetPassToken,
@@ -11,7 +11,7 @@ const ERROR_CODES = require("../../constant/error-messages");
 const { emailService } = require("../../utils/email");
 
 jest.mock("../../../models/admins", () => ({
-  Admin: {
+  Admins: {
     create: jest.fn(),
     update: jest.fn(),
     destroy: jest.fn(),
@@ -38,10 +38,10 @@ jest.mock("bcrypt", () => ({
 }));
 describe("service/admins", () => {
   beforeEach(() => {
-    Admin.create.mockReset();
-    Admin.update.mockReset();
-    Admin.destroy.mockReset();
-    Admin.findOne.mockReset();
+    Admins.create.mockReset();
+    Admins.update.mockReset();
+    Admins.destroy.mockReset();
+    Admins.findOne.mockReset();
   });
   afterEach(() => {
     jest.resetAllMocks();
@@ -55,7 +55,7 @@ describe("service/admins", () => {
 
     it(`should throw error ${ERROR_CODES.USER_ALREADY_EXISTS.message}`, async () => {
       try {
-        Admin.findOne.mockResolvedValueOnce({ abcd: "abcd" });
+        Admins.findOne.mockResolvedValueOnce({ abcd: "abcd" });
         await AdminService.register(registerationDetails);
       } catch (error) {
         expect(error.message).toBeDefined();
@@ -65,7 +65,7 @@ describe("service/admins", () => {
 
     it(`should create a user`, async () => {
       registerationDetails.password = "Mehmood@Curriki1";
-      Admin.findOne.mockResolvedValueOnce(null);
+      Admins.findOne.mockResolvedValueOnce(null);
       const response = await AdminService.register(registerationDetails);
       expect(response).toBeDefined();
       expect(response).toBe(true);
@@ -80,7 +80,7 @@ describe("service/admins", () => {
 
     it(`should throw error ${ERROR_CODES.INVALID_EMAIL_PASSWORD.message}`, async () => {
       try {
-        Admin.findOne.mockResolvedValueOnce(null);
+        Admins.findOne.mockResolvedValueOnce(null);
         await AdminService.login(loginCreds);
       } catch (error) {
         expect(error.message).toBeDefined();
@@ -92,7 +92,7 @@ describe("service/admins", () => {
 
     it(`should throw error ${ERROR_CODES.INVALID_EMAIL_PASSWORD.message}`, async () => {
       try {
-        Admin.findOne.mockResolvedValueOnce({ password: "123" });
+        Admins.findOne.mockResolvedValueOnce({ password: "123" });
         jest.spyOn(bcrypt, "compare").mockResolvedValueOnce(false);
         await AdminService.login(loginCreds);
       } catch (error) {
@@ -104,7 +104,7 @@ describe("service/admins", () => {
     });
 
     it(`should login a user`, async () => {
-      Admin.findOne.mockResolvedValueOnce({ password: "123" });
+      Admins.findOne.mockResolvedValueOnce({ password: "123" });
       jest.spyOn(bcrypt, "compare").mockResolvedValueOnce(true);
       issueToken.mockResolvedValueOnce("token");
       const response = await AdminService.login(loginCreds);
@@ -115,7 +115,7 @@ describe("service/admins", () => {
 
   describe("getProfile()", () => {
     it(`should return profile`, async () => {
-      Admin.findOne.mockResolvedValueOnce({ id: 2 });
+      Admins.findOne.mockResolvedValueOnce({ id: 2 });
       const response = await AdminService.getProfile({ id: 2 });
       expect(response).toBeDefined();
       expect(response).toEqual({ id: 2 });
@@ -166,7 +166,7 @@ describe("service/admins", () => {
   describe("updatePassword()", () => {
     it(`should return error ${ERROR_CODES.INVALID_PASSWORD.message}`, async () => {
       try {
-        Admin.findOne.mockResolvedValueOnce(null);
+        Admins.findOne.mockResolvedValueOnce(null);
         await AdminService.updatePassword({
           loggedUser: { id: 2 },
           password: "Mehmood@Curriki1",
@@ -180,7 +180,7 @@ describe("service/admins", () => {
 
     it(`should return error ${ERROR_CODES.INVALID_PASSWORD.message}`, async () => {
       try {
-        Admin.findOne.mockResolvedValueOnce({ password: "123" });
+        Admins.findOne.mockResolvedValueOnce({ password: "123" });
         jest.spyOn(bcrypt, "compare").mockResolvedValueOnce(false);
         await AdminService.updatePassword({
           loggedUser: { id: 2 },
@@ -195,7 +195,7 @@ describe("service/admins", () => {
 
     it(`should return error ${ERROR_CODES.CANNOT_USE_OLD_PASSWORD.message}`, async () => {
       try {
-        Admin.findOne.mockResolvedValueOnce({ password: "123" });
+        Admins.findOne.mockResolvedValueOnce({ password: "123" });
         jest.spyOn(bcrypt, "compare").mockResolvedValueOnce(true);
         await AdminService.updatePassword({
           loggedUser: { id: 2 },
@@ -211,9 +211,9 @@ describe("service/admins", () => {
     });
 
     it(`should update admin password`, async () => {
-      Admin.findOne.mockResolvedValueOnce({ password: "asd" });
+      Admins.findOne.mockResolvedValueOnce({ password: "asd" });
       jest.spyOn(bcrypt, "compare").mockResolvedValueOnce(true);
-      Admin.update.mockResolvedValueOnce(true);
+      Admins.update.mockResolvedValueOnce(true);
       const response = await AdminService.updatePassword({
         loggedUser: { id: 2 },
         password: "Mehmood@Curriki1",
@@ -226,7 +226,7 @@ describe("service/admins", () => {
 
   describe("forgetPassword()", () => {
     it(`should return true`, async () => {
-      Admin.findOne.mockResolvedValueOnce(null);
+      Admins.findOne.mockResolvedValueOnce(null);
       const response = await AdminService.forgetPassword({
         email: "Mehmood@Curriki.com",
       });
@@ -235,7 +235,7 @@ describe("service/admins", () => {
     });
 
     it(`should return true`, async () => {
-      Admin.findOne.mockResolvedValueOnce({
+      Admins.findOne.mockResolvedValueOnce({
         id: 1,
         email: "mehmoodce@gmail.com",
       });
@@ -251,7 +251,7 @@ describe("service/admins", () => {
     });
 
     it(`should return true`, async () => {
-      Admin.findOne.mockResolvedValueOnce({
+      Admins.findOne.mockResolvedValueOnce({
         id: 1,
         email: "mehmoodce@gmail.com",
       });
@@ -299,7 +299,7 @@ describe("service/admins", () => {
       try {
         ResetPasswordTokens.findOne.mockResolvedValueOnce(true);
         validatePasswordToken.mockResolvedValueOnce({email: "mehmoodce@gmail.com"});
-        Admin.findOne.mockResolvedValueOnce(null);
+        Admins.findOne.mockResolvedValueOnce(null);
         await AdminService.resetPassword({
           password: "Mehmood@Curriki1",
           token: "token",
@@ -313,9 +313,9 @@ describe("service/admins", () => {
     it(`should return error ${ERROR_CODES.RESET_PASS_LINK_EXPIRED.message}`, async () => {
         ResetPasswordTokens.findOne.mockResolvedValueOnce(true);
         validatePasswordToken.mockResolvedValueOnce({email: "mehmoodce@gmail.com"});
-        Admin.findOne.mockResolvedValueOnce(true);
+        Admins.findOne.mockResolvedValueOnce(true);
         ResetPasswordTokens.destroy.mockResolvedValueOnce(true);
-        Admin.update.mockResolvedValueOnce(true);
+        Admins.update.mockResolvedValueOnce(true);
         const response = await AdminService.resetPassword({
           password: "Mehmood@Curriki1",
           token: "token",

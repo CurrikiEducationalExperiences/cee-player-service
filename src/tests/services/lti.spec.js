@@ -1,6 +1,6 @@
 const lti = require("ltijs").Provider;
 const axios = require("axios");
-const { ltiService } = require("../../service/lti");
+const { LtiService } = require("../../services/lti");
 const { PlatformSettings } = require("../../../models/platformSettings");
 const ERROR_CODES = require("../../constant/error-messages");
 const SUCCESS_CODES = require("../../constant/success-messages");
@@ -54,7 +54,7 @@ describe("service/lti", () => {
       lti.NamesAndRoles.getMembers.mockResolvedValueOnce({
         members: mockMembers,
       });
-      await ltiService.members({}, res);
+      await LtiService.members({}, res);
       expect(lti.NamesAndRoles.getMembers).toHaveBeenCalledWith("mock-token");
       expect(res.send).toHaveBeenCalledWith(mockMembers);
       expect(res.sendStatus).not.toHaveBeenCalled();
@@ -65,7 +65,7 @@ describe("service/lti", () => {
       lti.NamesAndRoles.getMembers.mockRejectedValueOnce(
         new Error(errorMessage)
       );
-      await ltiService.members(null, res);
+      await LtiService.members(null, res);
       expect(lti.NamesAndRoles.getMembers).toHaveBeenCalledWith("mock-token");
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.send).toHaveBeenCalledWith(errorMessage);
@@ -106,7 +106,7 @@ describe("service/lti", () => {
       lti.Grade.getLineItems.mockResolvedValueOnce({ lineItems: [] });
       lti.Grade.createLineItem.mockResolvedValueOnce({ id: 1234567890 });
       lti.Grade.submitScore.mockResolvedValueOnce(true);
-      await ltiService.grade(req, res);
+      await LtiService.grade(req, res);
       expect(res.send).toHaveBeenCalledWith(true);
     });
 
@@ -116,14 +116,14 @@ describe("service/lti", () => {
         lineItems: [{ id: 1212 }],
       });
       lti.Grade.submitScore.mockResolvedValueOnce(true);
-      await ltiService.grade(req, res);
+      await LtiService.grade(req, res);
       expect(res.send).toHaveBeenCalledWith(true);
     });
 
     it("should create and submit grade when lineitem id is received", async () => {
       res.locals.token.platformContext.endpoint.lineitem = true;
       lti.Grade.submitScore.mockResolvedValueOnce(true);
-      await ltiService.grade(req, res);
+      await LtiService.grade(req, res);
       expect(res.send).toHaveBeenCalledWith(true);
     });
 
@@ -131,7 +131,7 @@ describe("service/lti", () => {
       const errorMessage = "An error occurred";
       res.locals.token.platformContext.endpoint.lineitem = true;
       lti.Grade.submitScore.mockResolvedValueOnce(new Error(errorMessage));
-      await ltiService.grade(req, res);
+      await LtiService.grade(req, res);
       expect(res.send).toHaveBeenCalled();
     });
   });
@@ -161,20 +161,20 @@ describe("service/lti", () => {
 
     it("should create the deeplinking form", async () => {
       lti.DeepLinking.createDeepLinkingForm.mockResolvedValueOnce(true);
-      await ltiService.deeplink(req, res);
+      await LtiService.deeplink(req, res);
       expect(res.send).toHaveBeenCalledWith(true);
     });
 
     it("should send 500", async () => {
       lti.DeepLinking.createDeepLinkingForm.mockResolvedValueOnce(null);
-      await ltiService.deeplink(req, res);
+      await LtiService.deeplink(req, res);
       expect(res.sendStatus).toHaveBeenCalledWith(500);
     });
 
     it("should send 500 in case of error", async () => {
       const errorMessage = 'An Error Occured'
       lti.DeepLinking.createDeepLinkingForm.mockResolvedValueOnce(new Error(errorMessage));
-      await ltiService.deeplink(req, res);
+      await LtiService.deeplink(req, res);
       expect(res.send).toHaveBeenCalled();
     });
   });
@@ -196,7 +196,7 @@ describe("service/lti", () => {
     });
 
     it("should get the info", async () => {
-      await ltiService.info(req, res);
+      await LtiService.info(req, res);
       expect(res.send).toHaveBeenCalledWith({
         token: "mock-token",
         context: "mock-context",
@@ -229,13 +229,13 @@ describe("service/lti", () => {
 
     it("should return error for invalid query params", async () => {
       req.query.query = 1;
-      await ltiService.resources(req, res);
+      await LtiService.resources(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
     it("should return error for no matching platform", async () => {
       PlatformSettings.findOne.mockResolvedValueOnce(null);
-      await ltiService.resources(req, res);
+      await LtiService.resources(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
@@ -246,7 +246,7 @@ describe("service/lti", () => {
         cee_secret_key: "mock-secret-key",
       });
       jest.spyOn(axios, "get").mockResolvedValueOnce({ data: true });
-      await ltiService.resources(req, res);
+      await LtiService.resources(req, res);
       expect(res.send).toHaveBeenCalledWith(true);
     });
   });
@@ -274,7 +274,7 @@ describe("service/lti", () => {
 
     it("should return error no matching platform found", async () => {
       PlatformSettings.findOne.mockResolvedValueOnce(null);
-      await ltiService.stream(req, res);
+      await LtiService.stream(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
@@ -290,7 +290,7 @@ describe("service/lti", () => {
           data: true,
           headers: { "content-length": 10 },
         });
-      await ltiService.stream(req, res);
+      await LtiService.stream(req, res);
       expect(res.writeHead).toHaveBeenCalledWith(200, {
         "Content-Disposition": 'attachment; filename="1qwe123.c2e"',
         "Content-Length": 10,
@@ -328,14 +328,14 @@ describe("service/lti", () => {
 
     it("should return error no matching platform found", async () => {
       PlatformSettings.findOne.mockResolvedValueOnce(null);
-      await ltiService.xapi(req, res);
+      await LtiService.xapi(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
     it("should return error for invalid inputs", async () => {
       req.body.id = null;
       PlatformSettings.findOne.mockResolvedValueOnce(true);
-      await ltiService.xapi(req, res);
+      await LtiService.xapi(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
@@ -346,7 +346,7 @@ describe("service/lti", () => {
         cee_provider_url: "ioo90o",
       });
       jest.spyOn(axios, "post").mockResolvedValueOnce({ data: true });
-      await ltiService.xapi(req, res);
+      await LtiService.xapi(req, res);
       expect(res.send).toHaveBeenCalledWith(true);
     });
   });
@@ -378,7 +378,7 @@ describe("service/lti", () => {
     it("should return an error if the secret is invalid", async () => {
       process.env.ADMIN_SECRET = "valid-secret";
       req.body.secret = "invalid-secret";
-      await ltiService.registerPlatform(req, res);
+      await LtiService.registerPlatform(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.send).toHaveBeenCalledWith(
         ERROR_CODES.INVALID_PARAMETERS.message
@@ -389,7 +389,7 @@ describe("service/lti", () => {
       process.env.ADMIN_SECRET = "xxxxxxxxxxxxxxx";
       req.body.secret = "xxxxxxxxxxxxxxx";
       jest.spyOn(lti, "registerPlatform").mockResolvedValueOnce(true);
-      await ltiService.registerPlatform(req, res);
+      await LtiService.registerPlatform(req, res);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.send).toHaveBeenCalledWith(
         SUCCESS_CODES.PLATFORM_REGISTERED_SUCCESSFULLY.message
@@ -413,7 +413,7 @@ describe("service/lti", () => {
     });
 
     it("should return canvas config json", async () => {
-      await ltiService.canvasConfigJson(req, res);
+      await LtiService.canvasConfigJson(req, res);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.setHeader).toHaveBeenCalledWith('Content-Type', 'application/json');
     });
