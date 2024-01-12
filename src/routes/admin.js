@@ -7,6 +7,7 @@ const { authMiddleware } = require("../middleware/auth");
 
 adminRouter.post(
   "/register",
+  authMiddleware,
   validationMiddleware(adminValdations.register),
   AdminController.register
 );
