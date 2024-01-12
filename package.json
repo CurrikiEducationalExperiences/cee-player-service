@@ -4,7 +4,9 @@
   "description": "CEE Player Application",
   "main": "index.js",
   "scripts": {
+    "scripts": "npm run migrate && npm run seed",
     "migrate": "npx sequelize-cli db:migrate",
+    "seed": "npx sequelize-cli db:seed:all",
     "test": "jest --verbose",
     "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage",
