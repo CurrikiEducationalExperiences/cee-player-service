@@ -1,7 +1,7 @@
-const ERROR_CODES = require("../constant/error-messages");
-const CustomError = require("../utils/error");
-const { Admins } = require("../../models/admins");
-const CONST_VARS = require("../constant/constant");
+const { Platforms } = require("../../models/platforms");
+const { PublicKeys } = require("../../models/publicKeys");
+const { PrivateKeys } = require("../../models/privateKeys");
+const lti = require("ltijs").Provider;
 
 class PlatformService {
   static async registerPlatform(params) {
@@ -20,13 +20,56 @@ class PlatformService {
   }
 
   static async getPlatforms() {
-    const platforms = await lti.getAllPlatforms();
+    let platformData = await Platforms.findAll({ raw: true });
+    let platforms = [];
+    await Promise.all(
+      platformData.map(async (data) => {
+        const createdAt = data.createdAt;
+        const updatedAt = data.updatedAt;
+        let platform = {};
+        const publicKeys = await PublicKeys.findOne({
+          where: { clientId: data.clientId },
+          attributes: {
+            exclude: [
+              "kid",
+              "clientId",
+              "platformUrl",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+          raw: true,
+        });
+        platformData.publicKeys = publicKeys;
+        const privateKeys = await PrivateKeys.findOne({
+          where: { clientId: data.clientId },
+          attributes: {
+            exclude: [
+              "kid",
+              "clientId",
+              "platformUrl",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+          raw: true,
+        });
+        delete data.createdAt
+        delete data.updatedAt
+        platform = data;
+        platform.publicKeys = publicKeys;
+        platform.privateKeys = privateKeys;
+        platform.createdAt = createdAt
+        platform.updatedAt = updatedAt
+        platforms.push(platform);
+      })
+    );
     return platforms;
   }
 
   static async deletePlatform(params) {
     const id = params.id;
-    await lti.deletePlatformById(id); // Deletes a platform
+    await lti.deletePlatformById(id);
     return true;
   }
 }

@@ -15,7 +15,7 @@ class LicenseeController {
 
   static async getLicensees(req, res, next) {
     try {
-      const result = await LicenseeService.getLicensees(req.body);
+      const result = await LicenseeService.getLicensees();
       return responseHandler({
         response: res,
         result,

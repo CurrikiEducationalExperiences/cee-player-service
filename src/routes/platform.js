@@ -9,4 +9,4 @@ platformRouter.post("/registerPlatform", validationMiddleware(platformValidation
 platformRouter.get("/getPlatforms", authMiddleware, PlatformController.getPlatform);
 platformRouter.delete("/deletePlatform", validationMiddleware(platformValidations.deletePlatform, (isGet = true)), authMiddleware, PlatformController.deletePlatform);
 
-module.exports = adminRouter;
+module.exports = platformRouter;

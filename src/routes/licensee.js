@@ -7,7 +7,7 @@ const { authMiddleware } = require("../middleware/auth");
 
 licenseeRouter.post("/addLicensee", validationMiddleware(licenseeValidations.addLicensee), authMiddleware, LicenseeController.addLicensee);
 licenseeRouter.get("/getLicensees", authMiddleware, LicenseeController.getLicensees);
-licenseeRouter.put("/updateLicensee", validationMiddleware(licenseeValidations.updateLicensee), authMiddleware, LicenseeController.updateLicensee);
+licenseeRouter.patch("/updateLicensee", validationMiddleware(licenseeValidations.updateLicensee), authMiddleware, LicenseeController.updateLicensee);
 licenseeRouter.delete("/deleteLicensee", validationMiddleware(licenseeValidations.deleteLicensee, (isGet = true)), authMiddleware, LicenseeController.deleteLicensee);
 
-module.exports = adminRouter;
+module.exports = licenseeRouter;
