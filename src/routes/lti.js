@@ -38,11 +38,6 @@ ltiRouter.put(
   validationMiddleware(ltiValidations.xapi),
   LtiController.xapi
 );
-ltiRouter.post(
-  "/platform/register",
-  validationMiddleware(ltiValidations.registerPlatform),
-  LtiController.registerPlatform
-);
 ltiRouter.get(
   "/canvas/config",
   LtiController.canvasConfigJson

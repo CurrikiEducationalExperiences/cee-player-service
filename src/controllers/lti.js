@@ -28,10 +28,6 @@ class LtiController {
     await LtiService.xapi(req, res);
   }
 
-  static async registerPlatform(req, res) {
-    await LtiService.registerPlatform(req, res);
-  }
-
   static async canvasConfigJson(req, res) {
     await LtiService.canvasConfigJson(req, res);
   }
