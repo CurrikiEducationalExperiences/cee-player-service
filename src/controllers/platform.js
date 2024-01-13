@@ -13,7 +13,7 @@ class PlatformController {
     }
   }
 
-  static async getPlatform(req, res, next) {
+  static async getPlatforms(req, res, next) {
     try {
       const result = await PlatformService.getPlatforms();
       return responseHandler({

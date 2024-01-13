@@ -6,7 +6,7 @@ const platformValidations = require("../validations/platform");
 const { authMiddleware } = require("../middleware/auth");
 
 platformRouter.post("/registerPlatform", validationMiddleware(platformValidations.registerPlatform), authMiddleware, PlatformController.registerPlatform);
-platformRouter.get("/getPlatforms", authMiddleware, PlatformController.getPlatform);
+platformRouter.get("/getPlatforms", authMiddleware, PlatformController.getPlatforms);
 platformRouter.delete("/deletePlatform", validationMiddleware(platformValidations.deletePlatform, (isGet = true)), authMiddleware, PlatformController.deletePlatform);
 
 module.exports = platformRouter;
