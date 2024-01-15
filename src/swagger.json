@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "CEE-SERVICES-PLAYER"
+    "title": "CEE-PLAYER-SERVICE"
   },
   "schemes": ["http", "https"],
   "paths": {
