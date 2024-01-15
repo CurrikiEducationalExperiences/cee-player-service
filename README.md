@@ -1,1 +1,1 @@
-# cee-services-player
+# cee-player-service
