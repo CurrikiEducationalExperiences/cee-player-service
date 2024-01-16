@@ -248,25 +248,6 @@ class LtiService {
       });
   }
 
-  static async registerPlatform(req, res) {
-    const params = req.body;
-    if (process.env.ADMIN_SECRET != params.secret)
-      return res.status(400).send(ERROR_CODES.INVALID_PARAMETERS.message);
-
-    await lti.registerPlatform({
-      url: params.url,
-      name: params.name,
-      clientId: params.clientId,
-      authenticationEndpoint: params.authenticationEndpoint,
-      accesstokenEndpoint: params.accesstokenEndpoint,
-      authConfig: {
-        method: params.authConfigMethod,
-        key: params.authConfigKey,
-      },
-    });
-    return res.status(200).send(SUCCESS_CODES.PLATFORM_REGISTERED_SUCCESSFULLY.message);
-  }
-
   static async canvasConfigJson(req, res) {
     // Your data to be sent as JSON
     const canvasConfigJson = {
