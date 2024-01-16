@@ -489,6 +489,442 @@
         }
       }
     },
+    "/api/v1/platform/registerPlatform": {
+      "post": {
+        "x-swagger-router-controller": "Platform Registration",
+        "operationId": "Platform Registration",
+        "tags": ["Platform"],
+        "summary": "Platform Registration Endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Platform details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "clientId": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "authenticationEndpoint": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "accesstokenEndpoint": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "authConfigMethod": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "authConfigKey": {
+                  "type": "string",
+                  "example": "Some string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response Format",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "result": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/api/v1/platform/getPlatforms": {
+      "get": {
+        "x-swagger-router-controller": "Platforms",
+        "operationId": "Platforms",
+        "tags": ["Platform"],
+        "summary": "Get Platforms Endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response Format",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "result": {
+                  "type": "object",
+                  "example": [
+                    {
+                        "id": 1,
+                        "platformName": "Test Studio 1",
+                        "platformUrl": "https://test1.com",
+                        "clientId": "10001",
+                        "authEndpoint": "https://xxxxxxxx/api/lti/authorize_redirect",
+                        "accesstokenEndpoint": "https://xxxxxxxx/login/oauth2/token",
+                        "kid": "xxxxxxxx",
+                        "authConfig": {
+                            "method": "JWK_SET",
+                            "key": "https://xxxxxxxx/api/lti/security/jwks"
+                        },
+                        "authorizationServer": null,
+                        "publicKeys": {
+                            "iv": "xxxxxxxx",
+                            "data": "xxxxxxxx"
+                        },
+                        "privateKeys": {
+                            "iv": "xxxxxxxx",
+                            "data": "xxxxxxxx"
+                        },
+                        "createdAt": "2024-01-16T07:01:17.758Z",
+                        "updatedAt": "2024-01-16T07:01:17.758Z"
+                    }
+                  ]
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/api/v1/platform/deletePlatform": {
+      "delete": {
+        "x-swagger-router-controller": "Platforms",
+        "operationId": "Platforms",
+        "tags": ["Platform"],
+        "summary": "Delete Platforms Endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          },
+          {
+            "name": "platformId",
+            "in": "query",
+            "description": "platformId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "abcd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response Format",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "result": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/api/v1/licensee/addLicensee": {
+      "post": {
+        "x-swagger-router-controller": "Add Licensee",
+        "operationId": "Add Licensee",
+        "tags": ["Licensee"],
+        "summary": "Add Licensee Endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Platform details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lti_client_id": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "cee_licensee_id": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "cee_secret_key": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "cee_provider_url": {
+                  "type": "string",
+                  "example": "Some string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response Format",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "result": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/api/v1/licensee/getLicensees": {
+      "get": {
+        "x-swagger-router-controller": "Licensee",
+        "operationId": "Licensee",
+        "tags": ["Licensee"],
+        "summary": "Get Licensee Endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response Format",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "result": {
+                  "type": "object",
+                  "example": [
+                    {
+                      "id": 1,
+                      "lti_client_id": "10001",
+                      "cee_licensee_id": "license",
+                      "cee_secret_key": "secret",
+                      "cee_provider_url": "https://test1.com",
+                      "platformName": "Test Studio 1",
+                      "createdAt": "2024-01-16T07:08:19.659Z",
+                      "updatedAt": "2024-01-16T07:08:19.659Z"
+                  }
+                  ]
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/api/v1/licensee/updateLicensee": {
+      "patch": {
+        "x-swagger-router-controller": "Update Licensee",
+        "operationId": "Update Licensee",
+        "tags": ["Licensee"],
+        "summary": "Update Licensee Endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "1"
+            }
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "description": "Platform details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lti_client_id": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "cee_licensee_id": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "cee_secret_key": {
+                  "type": "string",
+                  "example": "Some string"
+                },
+                "cee_provider_url": {
+                  "type": "string",
+                  "example": "Some string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response Format",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "result": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
+    "/api/v1/licensee/deleteLicensee": {
+      "delete": {
+        "x-swagger-router-controller": "Licensee",
+        "operationId": "Licensee",
+        "tags": ["Licensee"],
+        "summary": "Delete Licensee Endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "platformId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response Format",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Success"
+                },
+                "result": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }  
+        }
+      }
+    },
     "/members": {
       "get": {
         "x-swagger-router-controller": "members",
