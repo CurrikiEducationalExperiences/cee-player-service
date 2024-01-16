@@ -1,5 +1,5 @@
 {
-  "name": "cee-services-player",
+  "name": "cee-player-service",
   "version": "1.0.0",
   "description": "CEE Player Application",
   "main": "index.js",
