@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+
 const { sequelize } = require("../src/utils/database");
 
 const PrivateKeys = sequelize.define("privatekeys", {
