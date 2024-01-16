@@ -1,5 +1,4 @@
 const { DataTypes } = require("sequelize");
-
 const { sequelize } = require("../src/utils/database");
 
 const PublicKeys = sequelize.define("publickeys", {
