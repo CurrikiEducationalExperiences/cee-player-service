@@ -7,4 +7,4 @@ fullnameOverride: ''
 
 MULTIPLE_TG: ''
 CERTIFICATE_ARN: ''
-COMMON_NAME: 'cee-services-player'
+COMMON_NAME: 'cee-player-service'

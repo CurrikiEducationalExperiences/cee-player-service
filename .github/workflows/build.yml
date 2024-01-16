@@ -19,9 +19,9 @@ env:
   AWS_DEFAULT_OUTPUT: ${{ vars.AWS_DEFAULT_OUTPUT }}
   AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  PROJECT_NAME: cee-services-player
+  PROJECT_NAME: cee-player-service
   ECR_USERNAME: ${{vars.ECR_USERNAME}}
-  CONTAINER_IMAGE: cee-services-player:${{ github.sha }}
+  CONTAINER_IMAGE: cee-player-service:${{ github.sha }}
   AWS_ACCOUNT_ID: ${{vars.AWS_ACCOUNT_ID}}
   EKS_CLUSTER_NAME: ${{vars.EKS_CLUSTER_NAME}}
   ENV_JS: ${{vars.ENV_JS}}
@@ -69,13 +69,13 @@ jobs:
         aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME}
         curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
         if [ ${{ github.ref }} = 'refs/heads/develop' ]; then
-          helm upgrade --namespace c2e-dev --install --debug ${PROJECT_NAME} charts/cee-services-player \
+          helm upgrade --namespace c2e-dev --install --debug ${PROJECT_NAME} charts/cee-player-service \
           --set image.repository=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE
         elif [ ${{ github.ref }} = 'refs/heads/staging' ]; then
-          helm upgrade --namespace c2e-stage --install --debug ${PROJECT_NAME} charts/cee-services-player \
+          helm upgrade --namespace c2e-stage --install --debug ${PROJECT_NAME} charts/cee-player-service \
           --set image.repository=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE
         elif [ ${{ github.ref }} = 'refs/heads/main' ]; then
-          helm upgrade --namespace c2e-prod --install --debug ${PROJECT_NAME} charts/cee-services-player \
+          helm upgrade --namespace c2e-prod --install --debug ${PROJECT_NAME} charts/cee-player-service \
           --set image.repository=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE
         else
           echo "No specific config."
