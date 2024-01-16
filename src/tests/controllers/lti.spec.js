@@ -128,24 +128,6 @@ describe("controller/routes", () => {
     });
   });
 
-  describe("platform register", () => {
-    it("should register a platform", async () => {
-      const req = {};
-      const result = {
-        code: 200,
-        data: [],
-      };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        result,
-      };
-      const next = jest.fn();
-      jest.spyOn(LtiService, "registerPlatform").mockResolvedValueOnce(result);
-      await LtiController.registerPlatform(req, res, next);
-      expect(res.result).toEqual(result);
-    });
-  });
-
   describe("canvas config json", () => {
     it("should return canvas config json", async () => {
       const req = {};

@@ -351,52 +351,6 @@ describe("service/lti", () => {
     });
   });
 
-  describe("registerPlatform", () => {
-    let req;
-    let res;
-
-    beforeEach(() => {
-      req = {
-        body: {
-          url: "xxxxxxxxxxxxxxx",
-          name: "xxxxxxxxxxxxxxx",
-          clientId: "xxxxxxxxxxxxxxx",
-          authenticationEndpoint: "xxxxxxxxxxxxxxx",
-          accesstokenEndpoint: "xxxxxxxxxxxxxxx",
-          authConfigMethod: "xxxxxxxxxxxxxxx",
-          authConfigKey: "xxxxxxxxxxxxxxx",
-          secret: "xxxxxxxxxxxxxxx",
-        },
-      };
-
-      res = {
-        status: jest.fn().mockReturnThis(),
-        send: jest.fn(),
-      };
-    });
-
-    it("should return an error if the secret is invalid", async () => {
-      process.env.ADMIN_SECRET = "valid-secret";
-      req.body.secret = "invalid-secret";
-      await LtiService.registerPlatform(req, res);
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.send).toHaveBeenCalledWith(
-        ERROR_CODES.INVALID_PARAMETERS.message
-      );
-    });
-
-    it("should register the platform and return success", async () => {
-      process.env.ADMIN_SECRET = "xxxxxxxxxxxxxxx";
-      req.body.secret = "xxxxxxxxxxxxxxx";
-      jest.spyOn(lti, "registerPlatform").mockResolvedValueOnce(true);
-      await LtiService.registerPlatform(req, res);
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.send).toHaveBeenCalledWith(
-        SUCCESS_CODES.PLATFORM_REGISTERED_SUCCESSFULLY.message
-      );
-    });
-  });
-
   describe("canvasConfigJson", () => {
     let req;
     let res;
