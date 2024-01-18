@@ -81,7 +81,6 @@ lti.whitelist(new RegExp(/^\/api-docs/), {
   method: "get",
 });
 lti.whitelist(
-  { route: "/platform/register", method: "post" },
   { route: "/canvas/config", method: "get" }
 );
 
