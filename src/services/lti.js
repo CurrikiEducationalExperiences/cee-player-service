@@ -16,17 +16,12 @@ class LtiService {
   }
 
   static async grade(req, res) {
+    // console.log("req", req, "res", res);
+    // return false;
+
     try {
       const idtoken = res.locals.token; // IdToken
       const score = req.body.grade; // User numeric score sent in the body
-      // Creating Grade object
-      const gradeObj = {
-        userId: idtoken.user,
-        scoreGiven: score,
-        scoreMaximum: 100,
-        activityProgress: "Completed",
-        gradingProgress: "FullyGraded",
-      };
 
       // Selecting linetItem ID
       let lineItemId = idtoken.platformContext.endpoint.lineitem; // Attempting to retrieve it from idtoken
@@ -48,6 +43,37 @@ class LtiService {
           lineItemId = lineItem.id;
         } else lineItemId = lineItems[0].id;
       }
+
+      const date = new Date();
+      //RFC 3339 format
+      const formatted = date.toISOString();
+
+      //Submission review link
+      const reviewData = new URLSearchParams({
+        result_id: 1,
+        activity_id: lineItemId,
+        user_id: idtoken.user
+      });
+      const buildReviewData = reviewData.toString();
+
+      // encode user information.
+      const ltiSubmissionInfo = Buffer.from(buildReviewData).toString('base64');
+
+      // Creating Grade object
+      const gradeObj = {
+        userId: idtoken.user,
+        scoreGiven: score,
+        scoreMaximum: 100,
+        activityProgress: "Completed",
+        gradingProgress: "FullyGraded",
+        "https://canvas.instructure.com/lti/submission": {
+          "new_submission": true,
+          "submission_type": "basic_lti_launch",
+          // "submission_data": `${process.env.NODE_APP_BASEURL}lti/summary?submission=${ltiSubmissionInfo}`,
+          "submission_data": `${process.env.NODE_APP_BASEURL}play?c2eId=a435e8f0-98f5-11ee-b38d-15d491e3d304`,
+          "submitted_at": formatted,
+        }
+      };
 
       // Sending Grade
       const responseGrade = await lti.Grade.submitScore(
