@@ -172,6 +172,7 @@ class LtiService {
       });
   }
 
+  // Deprecated
   static async stream(req, res) {
     var platformSettings = await PlatformSettings.findOne({
       where: { lti_client_id: res.locals.token.clientId },

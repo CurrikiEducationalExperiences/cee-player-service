@@ -20,6 +20,7 @@ class LtiController {
     await LtiService.resources(req, res);
   }
 
+  // Deprecated
   static async stream(req, res) {
     await LtiService.stream(req, res);
   }
