@@ -6,7 +6,7 @@ class StreamController {
   // Request streaming session token from the store service
   static async getToken(req, res, next) {
     // Platform settings will be determined by the lti session, hardcoded for now
-    const settings = await PlatformSettings.findOne({where: {cee_licensee_id: 'tony@curriki.org'}});
+    const settings = await PlatformSettings.findOne({where: {lti_client_id: res.locals.token.clientId}});
     const subId = req.query.subid;
     
     try {
@@ -33,7 +33,7 @@ class StreamController {
   // Gets manifest from the store service
   static async getManifest(req, res, next) {
     const subId = req.query.subid;
-    const settings = await PlatformSettings.findOne({where: {cee_licensee_id: 'tony@curriki.org'}});
+    const settings = await PlatformSettings.findOne({where: {lti_client_id: res.locals.token.clientId}});
     try {
       const options = {
         method: 'GET', // Adjust the HTTP method as needed (GET, POST, etc.)
@@ -59,7 +59,7 @@ class StreamController {
   // Gets manifest from the store service
   static async search(req, res, next) {
     const query = req.query.query;
-    const settings = await PlatformSettings.findOne({where: {cee_licensee_id: 'tony@curriki.org'}});
+    const settings = await PlatformSettings.findOne({where: {lti_client_id: res.locals.token.clientId}});
     try {
       const options = {
         method: 'GET', // Adjust the HTTP method as needed (GET, POST, etc.)
