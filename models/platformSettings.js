@@ -22,6 +22,18 @@ const PlatformSettings = sequelize.define("platformsettings", {
   cee_provider_url: {
     type: DataTypes.STRING(255),
     allowNull: false
+  },
+  lrs_url: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  lrs_username: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  lrs_password: {
+    type: DataTypes.STRING(255),
+    allowNull: false
   }
 });
 

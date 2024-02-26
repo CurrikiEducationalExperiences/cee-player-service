@@ -85,8 +85,8 @@ class StreamController {
 
 
   static async sendXAPI(req, res, next) {
-    const statement = req.body.statement;
     const settings = await PlatformSettings.findOne({where: {lti_client_id: res.locals.token.clientId}});
+    var statement = new TinCan.Statement(req.body.statement);
     var lrs;
     try {
       lrs = new TinCan.LRS(
@@ -102,25 +102,30 @@ class StreamController {
       next(ex);
     }
 
-    lrs.saveStatement(
-      statement,
-      {
-        callback: function (err, xhr) {
-          if (err !== null) {
-              if (xhr !== null) {
-                console.log("Failed to save statement: " + xhr.responseText + " (" + xhr.status + ")");
-                return res.status(500).json('Failed to save sttement');
-              }
-
-              console.log("Failed to save statement: " + err);
-              return res.status(500).json('Failed to save sttement');
+    try {
+      lrs.saveStatement(
+        statement,
+        {
+          callback: function (err, xhr) {
+            if (err !== null) {
+                if (xhr !== null) {
+                  console.log("Failed to save statement: " + xhr.responseText + " (" + xhr.status + ")");
+                  return res.status(500).json('Failed to save statement');
+                }
+  
+                console.log("Failed to save statement: " + err);
+                return res.status(500).json('Failed to save statement');
+            }
+  
+            console.log("Statement saved");
+            return res.status(200).json('Statement saved');
           }
-
-          console.log("Statement saved");
-          return res.status(200).json('Statement saved');
         }
-      }
-    );
+      );
+    } catch (e) {
+      console.log('Error saving statement: ', e);
+      return res.status(500).json('Failed to save statement');
+    }
   }
 }
 
