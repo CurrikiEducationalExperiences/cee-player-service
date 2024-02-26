@@ -1,4 +1,5 @@
 const axios = require('axios');
+const TinCan = require('tincanjs');
 const { responseHandler } = require("../utils/response");
 const { PlatformSettings } = require("../../models/platformSettings");
 class StreamController {
@@ -80,6 +81,46 @@ class StreamController {
 
       next(error);
     }
+  }
+
+
+  static async sendXAPI(req, res, next) {
+    const statement = req.body.statement;
+    const settings = await PlatformSettings.findOne({where: {lti_client_id: res.locals.token.clientId}});
+    var lrs;
+    try {
+      lrs = new TinCan.LRS(
+        {
+          endpoint: settings.lrs_url,
+          username: settings.lrs_username,
+          password: settings.lrs_password,
+          allowFail: false,
+        }
+      );
+    } catch (ex) {
+      console.log("Failed to setup LRS object: ", ex);
+      next(ex);
+    }
+
+    lrs.saveStatement(
+      statement,
+      {
+        callback: function (err, xhr) {
+          if (err !== null) {
+              if (xhr !== null) {
+                console.log("Failed to save statement: " + xhr.responseText + " (" + xhr.status + ")");
+                return res.status(500).json('Failed to save sttement');
+              }
+
+              console.log("Failed to save statement: " + err);
+              return res.status(500).json('Failed to save sttement');
+          }
+
+          console.log("Statement saved");
+          return res.status(200).json('Statement saved');
+        }
+      }
+    );
   }
 }
 

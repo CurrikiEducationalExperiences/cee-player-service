@@ -10,6 +10,7 @@ const setRouter = (app) => {
   router.get('/stream/token', StreamController.getToken);
   router.get('/stream/manifest', StreamController.getManifest);
   router.get('/stream/search', StreamController.search);
+  router.post('/stream/xapi', StreamController.sendXAPI);
 
   router.use(`/admin`, adminRouter);
   router.use(`/platform`, platformRouter);
