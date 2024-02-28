@@ -14,7 +14,13 @@ Welcome to the Curriki C2E Player Service API documentation. :tada: :tada: :tada
 - [Base URL](#base-url)
 - [Authentication](#authentication)
 - [Admin Routes](#admin-routes)
-  - [Get C2E Stream Token](#get-c2e-stream-token)
+  - [Account Registration Endpoint](#account-registration-endpoint)
+  - [Account Signin Endpoint](#account-signin-endpoint)
+  - [Get Account Profile](#get-account-profile)
+  - [Verify Reset Password Token](#verify-reset-password-token)
+  - [Update Account Password](#update-account-password)
+  - [Request Reset Password Link](#request-reset-password-link)
+  - [Reset Password](#reset-password)
 - [C2E Routes](#c2e-routes)
   - [Get C2E Stream Token](#get-c2e-stream-token)
   - [Get C2E Manifest](#get-c2e-manifest)
@@ -32,6 +38,8 @@ Welcome to the Curriki C2E Player Service API documentation. :tada: :tada: :tada
   - [Get Members Details Endpoint](#get-members-details-endpoint)
   - [Deeplink Endpoint](#deeplink-endpoint)
   - [Play Endpoint](#play-endpoint)
+- [Public Routes](#public-routes)
+  - [Get Canvas Config](#get-canvas-config)
 - [Swagger Documentation](#swagger-documentation)
 - [C2E SPECIFICATION DOCUMENT](https://github.com/CurrikiEducationalExperiences/cee-publisher-service/blob/main/public/C2E%20Specification%20v1.0.pdf?raw=true)
 
@@ -239,6 +247,7 @@ Endpoint to reset password.
       }
       ```
 
+---
 
 ## C2E Routes
 
