@@ -788,6 +788,8 @@ Endpoint to get canvas config.
       }
       ```
 
+---
+
 ## Swagger Documentation
 > Swagger Documentation can be found on following link https://service-host/api-docs/
 
