@@ -13,6 +13,8 @@ Welcome to the Curriki C2E Player Service API documentation. :tada: :tada: :tada
 ## Table of Contents
 - [Base URL](#base-url)
 - [Authentication](#authentication)
+- [Admin Routes](#admin-routes)
+  - [Get C2E Stream Token](#get-c2e-stream-token)
 - [C2E Routes](#c2e-routes)
   - [Get C2E Stream Token](#get-c2e-stream-token)
   - [Get C2E Manifest](#get-c2e-manifest)
@@ -45,6 +47,198 @@ https://service-host/api/v1
 ### API Key
 
 All endpoints require an `x-api-key` header for authentication. Different roles have different API keys for access.
+
+## Admin Routes
+
+
+### Account Registration Endpoint
+
+Endpoint to register a new account.
+
+- **URL:** `/admin/register`
+- **Method:** `POST`
+- **Summary:** Account Registration Endpoint
+- **Parameters:**
+  - `payload` (body) - Account details
+    - **Type:** object
+    - **Properties:**
+      - `email` (string) - Account Email
+      - `password` (string) - Account Password
+- **Responses:**
+  - `200`:
+    - **Description:** Success
+    - **Schema:**
+      ```json
+      {
+        "code": 200,
+        "message": "Success",
+        "result": true
+      }
+      ```
+
+
+### Account Signin Endpoint
+
+Endpoint to signin to account.
+
+- **URL:** `/admin/login`
+- **Method:** `POST`
+- **Summary:** Account Signin Endpoint
+- **Parameters:**
+  - `payload` (body) - Account Credentials
+    - **Type:** object
+    - **Properties:**
+      - `email` (string) - Account Email
+      - `password` (string) - Account Password
+- **Responses:**
+  - `200`:
+    - **Description:** Success
+    - **Schema:**
+      ```json
+      {
+        "code": 200,
+        "message": "Success",
+        "result": true
+      }
+      ```
+
+
+### Get Account Profile
+
+Endpoint to get account profile.
+
+- **URL:** `/admin/getProfile`
+- **Method:** `GET`
+- **Summary:** Get Account Profile
+- **Parameters:**
+  - `Authorization` (header) - Authorization
+    - **Type:** string
+    - **Default:** Bearer {token}
+    - **Required:** true
+- **Responses:**
+  - `200`:
+    - **Description:** Success
+    - **Schema:**
+      ```json
+      {
+        "code": 200,
+        "message": "Success",
+        "result": [
+          {
+            "id": 1,
+            "email": "jhondoe@curriki.com",
+            "createdAt": "2023-12-12T10:23:55.242Z",
+            "updatedAt": "2023-12-12T11:09:37.077Z"
+          }
+        ]
+      }
+      ```
+
+
+### Verify Reset Password Token
+
+Endpoint to verify reset password token.
+
+- **URL:** `/admin/verifyResetPasswordToken`
+- **Method:** `GET`
+- **Summary:** Verify Reset Password Token
+- **Parameters:**
+  - `token` (query) - Reset Password Token
+    - **Type:** string
+    - **Required:** true
+- **Responses:**
+  - `200`:
+    - **Description:** Success
+    - **Schema:**
+      ```json
+      {
+        "code": 200,
+        "message": "Success",
+        "result": true
+      }
+      ```
+
+
+### Update Account Password
+
+Endpoint to update account password.
+
+- **URL:** `/admin/updatePassword`
+- **Method:** `PATCH`
+- **Summary:** Update Account Password
+- **Parameters:**
+  - `Authorization` (header) - Authorization
+    - **Type:** string
+    - **Default:** Bearer {token}
+    - **Required:** true
+  - `payload` (body) - User credentials
+    - **Type:** object
+    - **Properties:**
+      - `password` (string) - Existing Password
+      - `newPassword` (string) - New Password
+- **Responses:**
+  - `200`:
+    - **Description:** Success
+    - **Schema:**
+      ```json
+      {
+        "code": 200,
+        "message": "Success",
+        "result": true
+      }
+      ```
+
+
+### Request Reset Password Link
+
+Endpoint to request reset password link.
+
+- **URL:** `/admin/forgetPassword`
+- **Method:** `POST`
+- **Summary:** Request Reset Password Link
+- **Parameters:**
+  - `payload` (body) - User credentials
+    - **Type:** object
+    - **Properties:**
+      - `email` (string) - Account Email
+- **Responses:**
+  - `200`:
+    - **Description:** Success
+    - **Schema:**
+      ```json
+      {
+        "code": 200,
+        "message": "Success",
+        "result": true
+      }
+      ```
+
+
+### Reset Password
+
+Endpoint to reset password.
+
+- **URL:** `/admin/resetPassword`
+- **Method:** `POST`
+- **Summary:** Reset Password
+- **Parameters:**
+  - `payload` (body) - User credentials
+    - **Type:** object
+    - **Properties:**
+      - `password` (string) - Account Password
+      - `token` (string) - Account Token
+- **Responses:**
+  - `200`:
+    - **Description:** Success
+    - **Schema:**
+      ```json
+      {
+        "code": 200,
+        "message": "Success",
+        "result": true
+      }
+      ```
+
 
 ## C2E Routes
 
@@ -520,6 +714,69 @@ Endpoint to play content.
         </form>
       </body>
       </html>
+      ```
+
+---
+
+## Public Routes
+
+### Get Canvas Config
+
+Endpoint to get canvas config.
+
+- **URL:** `/members`
+- **Method:** `GET`
+- **Operation ID:** `members`
+- **Summary:** Canvas Config JSON Endpoint
+- **Parameters:**
+- **Responses:**
+  - `200`:
+    - **Description:** Success
+    - **Schema:**
+      ```json
+      {
+        "title": "Curriki Educational Experiences",
+        "scopes": [
+          "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem",
+          "https://purl.imsglobal.org/spec/lti-nrps/scope/contextmembership.readonly",
+          "https://purl.imsglobal.org/spec/lti-ags/scope/score",
+          "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly",
+          "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem.readonly"
+        ],
+        "extensions": [
+          {
+            "platform": "canvas.instructure.com",
+            "settings": {
+              "platform": "canvas.instructure.com",
+              "text": "Curriki Educational Experiences",
+              "icon_url": "xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx/icon.svg",
+              "placements": [
+                {
+                  "text": "Curriki Educational Experiences",
+                  "icon_url": "xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx/icon.svg",
+                  "placement": "link_selection",
+                  "message_type": "LtiDeepLinkingRequest",
+                  "target_link_uri": "xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx"
+                },
+                {
+                  "text": "Curriki Educational Experiences",
+                  "icon_url": "xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx/icon.svg",
+                  "placement": "assignment_selection",
+                  "message_type": "LtiDeepLinkingRequest",
+                  "target_link_uri": "xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx"
+                }
+              ]
+            },
+            "privacy_level": "public"
+          }
+        ],
+        "public_jwk": {},
+        "description": "Curriki Educational Experiences LTI 1.3 Tool",
+        "custom_fields": {},
+        "public_jwk_url": "xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx/keys",
+        "target_link_uri": "xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx",
+        "oidc_initiation_url": "xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx/login"
+      }
       ```
 
 ## Swagger Documentation
