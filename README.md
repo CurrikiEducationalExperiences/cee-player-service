@@ -41,7 +41,7 @@ Welcome to the Curriki C2E Player Service API documentation. :tada: :tada: :tada
 - [Public Routes](#public-routes)
   - [Get Canvas Config](#get-canvas-config)
 - [Swagger Documentation](#swagger-documentation)
-- [C2E SPECIFICATION DOCUMENT](https://github.com/CurrikiEducationalExperiences/cee-publisher-service/blob/main/public/C2E%20Specification%20v1.0.pdf?raw=true)
+- [C2E TECHNICAL SPECIFICATION DOCUMENT](https://github.com/CurrikiEducationalExperiences/cee-publisher-service/blob/main/public/C2E%20Technical%20Specification%20v1.0.pdf?raw=true)
 
 ## Base URL
 
