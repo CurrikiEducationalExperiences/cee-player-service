@@ -95,7 +95,7 @@ class LtiService {
       const items = {
         type: "ltiResourceLink",
         title: resource.title,
-        url: `${process.env.NODE_APP_BASEURL}play?c2eId=${resource.id}`
+        url: `${process.env.NODE_APP_BASEURL}stream?subid=${resource.id}`
       };
       const form = await lti.DeepLinking.createDeepLinkingForm(
         res.locals.token,
@@ -172,6 +172,7 @@ class LtiService {
       });
   }
 
+  // Deprecated
   static async stream(req, res) {
     var platformSettings = await PlatformSettings.findOne({
       where: { lti_client_id: res.locals.token.clientId },

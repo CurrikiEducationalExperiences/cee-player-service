@@ -28,11 +28,13 @@ ltiRouter.get(
   validationMiddleware(ltiValidations.resources, (isGet = true)),
   LtiController.resources
 );
+/*
 ltiRouter.get(
   "/stream",
   validationMiddleware(ltiValidations.stream, (isGet = true)),
   LtiController.stream
 );
+*/
 ltiRouter.put(
   "/xapi/statements",
   validationMiddleware(ltiValidations.xapi),

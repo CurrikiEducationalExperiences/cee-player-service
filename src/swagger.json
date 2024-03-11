@@ -1615,6 +1615,152 @@
           }
         }
       }
+    },
+    "/api/v1/stream/token": {
+      "get": {
+        "x-swagger-router-controller": "Get C2E Streaming Session Token",
+        "operationId": "Get C2E Streaming Session Token",
+        "tags": ["Stream"],
+        "summary": "Get C2E Streaming Session Token",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          },
+          {
+            "name": "subid",
+            "in": "query",
+            "description": "Unique C2E subscription ID from store",
+            "schema": {
+              "type": "string",
+              "example": "29c226c9-c2f3-4b08-9349-068f18fe166f"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token request response",
+            "schema": {
+              "type": "object",
+              "example": {
+                "code": 200,
+                "message": "Success",
+                "result": {
+                  "ceeId": "C2E ID",
+                  "token": "C2E Stream Token",
+                  "expiresAt": "C2E Stream Token Expiry Date"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/stream/manifest": {
+      "get": {
+        "x-swagger-router-controller": "Get C2E Manifest",
+        "operationId": "Get C2E Manifest",
+        "tags": ["Stream"],
+        "summary": "Get C2E Manifest",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          },
+          {
+            "name": "subid",
+            "in": "query",
+            "description": "Unique C2E subscription ID from store",
+            "schema": {
+              "type": "string",
+              "example": "29c226c9-c2f3-4b08-9349-068f18fe166f"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with C2E manifest",
+            "schema": {
+              "type": "object",
+              "example": {
+                "code": 200,
+                "message": "Success",
+                "result": {
+                  "ceeId": "C2E Subscription ID",
+                  "manifest": "C2E Manifest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/stream/search": {
+      "get": {
+        "x-swagger-router-controller": "Search for subscribed C2E streams",
+        "operationId": "Search for subscribed C2E streams",
+        "tags": ["Stream"],
+        "summary": "Search for subscribed C2E streams",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Authorization",
+            "type": "string",
+            "default": "Bearer {token}",
+            "required": true
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "C2E stream search query",
+            "schema": {
+              "type": "string",
+              "example": "29c226c9-c2f3-4b08-9349-068f18fe166f"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "C2E stream search results",
+            "schema": {
+              "type": "object",
+              "example":
+              {
+                "code": 200,
+                "message": "Success",
+                "result": [
+                  {
+                    "name": "The Scientific Revolution",
+                    "subscriptionId": "88c9dfe5-c951-46e4-8e5a-365b9d42dbf8",
+                    "subject": [
+                      "Social Studies"
+                    ],
+                    "keywords": [
+                      "Homework/Assignment",
+                      "Unit of Study (for comprehensive layouts?)"
+                    ],
+                    "description": "This is a CurrikiStudio Project on the Scientific Revolution",
+                    "thumbnailUrl": "https://images.pexels.com/photos/769525/pexels-photo-769525.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
+                    "educationLevel": [
+                      "Grades 11-12 (Ages 16-18)",
+                      "College & Beyond"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

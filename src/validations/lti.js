@@ -22,7 +22,7 @@ module.exports.resources = Joi.object({
 });
 
 module.exports.stream = Joi.object({
-  ceeId: Joi.string().max(10000).allow(""),
+  subid: Joi.string().max(10000).allow(""),
 });
 
 module.exports.xapi = Joi.object({
