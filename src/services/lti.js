@@ -83,7 +83,7 @@ class LtiService {
       );
       return res.send(responseGrade);
     } catch (err) {
-      // console.log(err.message);
+      console.log(err);
       return res.status(500).send(err.message);
     }
   }
